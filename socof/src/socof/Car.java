@@ -6,6 +6,7 @@
 
 package socof;
 
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,7 +20,17 @@ public class Car extends Thread{
     Possition direction;
     Possition currentPos;
     double elapsedTime;
+    ArrayList<Car> carList;
 
+    public Car(String id, Possition initialPos, Possition direction, ArrayList<Car> carList) {
+        this.id = id;
+        this.initialPos = initialPos;
+        this.currentPos = initialPos;
+        this.direction = direction;
+        this.elapsedTime = 0;
+        this.carList = carList;
+    }
+        
     public Car(String id, Possition initialPos, Possition direction) {
         this.id = id;
         this.initialPos = initialPos;
@@ -36,12 +47,28 @@ public class Car extends Thread{
         this.elapsedTime = 0;
     }
     
+    public ArrayList<Car> getCarList() {
+        return carList;
+    }
+
+    public void setCarList(ArrayList<Car> carList) {
+        this.carList = carList;
+    }
+    
     public double getElapsedTime() {
         return elapsedTime;
     }
 
     public void setElapsedTime(double elapsedTime) {
         this.elapsedTime = elapsedTime;
+    }
+    
+    public Possition getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Possition direction) {
+        this.direction = direction;
     }
     
     public void run() {
@@ -54,7 +81,8 @@ public class Car extends Thread{
                currentPos=calculatePossition(elapsedTime/1000,initialPos,direction);
                System.out.println(toString());
                //escrever na memoria partilhada
-               //ler da memoria partilhada
+               //detectar colisão
+               //ler da memoria partilhada ?
                //alterar direcção  ?
                //alterar velocidade ?
            } catch (InterruptedException ex) {
