@@ -101,8 +101,8 @@ public class Car extends Thread{
        {
            try {
                Thread.sleep((long)timeInterval);
-               setElapsedTime(elapsedTime + timeInterval);
-               setCurrentPos(calculatePossition(elapsedTime/1000,initialPos,direction));
+               setElapsedTime(getElapsedTime() + timeInterval);
+               setCurrentPos(calculatePossition(getElapsedTime()/1000,getInitialPos(),getDirection()));
                CAD DetectorColision = new CAD(carList,this,getElapsedTime());
                DetectorColision.start();
                 System.out.println(toString());

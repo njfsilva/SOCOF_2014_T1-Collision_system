@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package socof;
 
 import java.util.ArrayList;
@@ -20,21 +19,21 @@ public class Socof {
     public static void main(String[] args) {
         // TODO code application logic here
         //Car(String id, Possition initialPos, Possition direction, ArrayList<Car> carList)
-        
-        Car car1 = new Car("1",new Possition(0,0),new Possition(2,2));
-        Car car2 = new Car("2",new Possition(0,5),new Possition(2,1));
+
+        Car car1 = new Car("1", new Possition(0, 0), new Possition(2, 2));
+        Car car2 = new Car("2", new Possition(0, 5), new Possition(2, 1));
         //Car car3 = new Car("3",new Possition(5,0),new Possition(1,2));
-        
+
         ArrayList ListaCar1 = new ArrayList<Car>();
         ArrayList ListaCar2 = new ArrayList<Car>();
         //ArrayList ListaCar3 = new ArrayList<Car>();
-        
+
         ListaCar1.add(car2);
         //ListaCar1.add(car3);
-        
+
         ListaCar2.add(car1);
         //ListaCar2.add(car3);
-        
+
         //ListaCar3.add(car1);
         //ListaCar3.add(car2);
         
@@ -45,6 +44,6 @@ public class Socof {
         car1.start();
         car2.start();
         //car3.start();
+
     }
-    
 }
