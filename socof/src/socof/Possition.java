@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package socof;
 
 /**
@@ -11,15 +10,18 @@ package socof;
  * @author Carlos
  */
 public class Possition {
+
     double axisX;
     double axisY;
+    double axisZ;
 
     public Possition() {
     }
 
-    public Possition(double axisX, double axisY) {
+    public Possition(double axisX, double axisY, double axisZ) {
         this.axisX = axisX;
         this.axisY = axisY;
+        this.axisZ = axisZ;
     }
 
     public double getAxisX() {
@@ -38,10 +40,17 @@ public class Possition {
         this.axisY = axisY;
     }
 
+    public double getAxisZ() {
+        return axisZ;
+    }
+
+    public void setAxisZ(double axisZ) {
+        this.axisZ = axisZ;
+    }
+
     @Override
     public String toString() {
-        return "Possition{" + "axisX=" + axisX + ", axisY=" + axisY + '}';
+        return "Possition{" + "axisX=" + axisX + ", axisY=" + axisY + ", axisZ=" + axisZ + '}';
     }
-    
-    
+
 }

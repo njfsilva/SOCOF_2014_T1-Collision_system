@@ -20,6 +20,7 @@ public class Car extends Thread{
     Possition direction;
     Possition currentPos;
     double elapsedTime;
+    double time;
     ArrayList<Car> carList;
 
     public Car(String id, Possition initialPos, Possition direction, ArrayList<Car> carList) {
@@ -28,6 +29,7 @@ public class Car extends Thread{
         this.currentPos = initialPos;
         this.direction = direction;
         this.elapsedTime = 0;
+        this.time = 0;
         this.carList = carList;
     }
         
@@ -37,14 +39,18 @@ public class Car extends Thread{
         this.currentPos = initialPos;
         this.direction = direction;
         this.elapsedTime = 0;
+                this.time = 0;
+
     }
     
     public Car(String id) {
         this.id = id;
-        this.initialPos = new Possition(0.0,0.0);
+        this.initialPos = new Possition(0.0,0.0,0.0);
         this.currentPos = initialPos;
-        this.direction = new Possition(2.0,3.0);
+        this.direction = new Possition(2.0,3.0,0.0);
         this.elapsedTime = 0;
+                this.time = 0;
+
     }
     
     public ArrayList<Car> getCarList() {
@@ -75,11 +81,11 @@ public class Car extends Thread{
         this.id = id;
     }
 
-    public Possition getInitialPos() {
+    public synchronized Possition getInitialPos() {
         return initialPos;
     }
 
-    public void setInitialPos(Possition initialPos) {
+    public synchronized void setInitialPos(Possition initialPos) {
         this.initialPos = initialPos;
     }
 
@@ -94,16 +100,25 @@ public class Car extends Thread{
     public String getCarId() {
         return id;
     }
+
+    public synchronized double getTime() {
+        return time;
+    }
+
+    public synchronized void setTime(double time) {
+        this.time = time;
+    }
     
     public void run() {
        double timeInterval = 1000.0; // mili segundos
-       while (currentPos.axisX<1000 || currentPos.axisY<1000 || currentPos.axisX>0 || currentPos.axisY>0)
+       while (currentPos.axisX<1000 && currentPos.axisY<1000 && currentPos.axisX>=0 && currentPos.axisY>=0)
        {
            try {
                Thread.sleep((long)timeInterval);
                setElapsedTime(getElapsedTime() + timeInterval);
-               setCurrentPos(calculatePossition(getElapsedTime()/1000,getInitialPos(),getDirection()));
-               CAD DetectorColision = new CAD(carList,this,getElapsedTime());
+               setTime(getTime() + timeInterval);
+               setCurrentPos(calculatePossition(getTime()/1000,getInitialPos(),getDirection()));
+               CAD DetectorColision = new CAD(carList,this);
                DetectorColision.start();
                 System.out.println(toString());
                //escrever na memoria partilhada
@@ -115,6 +130,7 @@ public class Car extends Thread{
                Logger.getLogger(Car.class.getName()).log(Level.SEVERE, null, ex);
            }
        }
+        System.out.println("Carro: "+ id + " saiu fora do area.");
     }
     
     public Possition calculatePossition(double time, Possition pInitial, Possition direction)
@@ -122,6 +138,7 @@ public class Car extends Thread{
         Possition pos = new Possition();
         pos.setAxisX(pInitial.getAxisX() + time * direction.getAxisX());
         pos.setAxisY(pInitial.getAxisY() + time * direction.getAxisY());
+        pos.setAxisZ(pInitial.getAxisZ() + time * direction.getAxisZ());
         return pos;
     }
 
