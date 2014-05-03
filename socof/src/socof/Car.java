@@ -63,12 +63,36 @@ public class Car extends Thread{
         this.elapsedTime = elapsedTime;
     }
     
-    public Possition getDirection() {
+    public synchronized Possition getDirection() {
         return direction;
     }
 
-    public void setDirection(Possition direction) {
+    public synchronized void setDirection(Possition direction) {
         this.direction = direction;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Possition getInitialPos() {
+        return initialPos;
+    }
+
+    public void setInitialPos(Possition initialPos) {
+        this.initialPos = initialPos;
+    }
+
+    public Possition getCurrentPos() {
+        return currentPos;
+    }
+
+    public synchronized void setCurrentPos(Possition currentPos) {
+        this.currentPos = currentPos;
+    }
+
+    public String getCarId() {
+        return id;
     }
     
     public void run() {
@@ -78,7 +102,7 @@ public class Car extends Thread{
            try {
                Thread.sleep((long)timeInterval);
                setElapsedTime(elapsedTime + timeInterval);
-               currentPos=calculatePossition(elapsedTime/1000,initialPos,direction);
+               setCurrentPos(calculatePossition(elapsedTime/1000,initialPos,direction));
                CAD DetectorColision = new CAD(carList,this,getElapsedTime());
                DetectorColision.start();
                 System.out.println(toString());
@@ -96,14 +120,14 @@ public class Car extends Thread{
     public Possition calculatePossition(double time, Possition pInitial, Possition direction)
     {
         Possition pos = new Possition();
-        pos.setAxisX(pInitial.axisX + time * direction.axisX);
-        pos.setAxisY(pInitial.axisY + time * direction.axisY);
+        pos.setAxisX(pInitial.getAxisX() + time * direction.getAxisX());
+        pos.setAxisY(pInitial.getAxisY() + time * direction.getAxisY());
         return pos;
     }
 
     @Override
     public String toString() {
-        return "carro " + id + ": x=" + currentPos.axisX + " y="+ currentPos.axisY;
+        return "carro " + id + ": x=" + currentPos.axisX + " y="+ currentPos.axisY + "; ElapsedTime: "+(elapsedTime/1000);
     }
     
 }

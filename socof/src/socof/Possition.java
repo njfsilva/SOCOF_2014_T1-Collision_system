@@ -37,6 +37,11 @@ public class Possition {
     public void setAxisY(double axisY) {
         this.axisY = axisY;
     }
+
+    @Override
+    public String toString() {
+        return "Possition{" + "axisX=" + axisX + ", axisY=" + axisY + '}';
+    }
     
     
 }
