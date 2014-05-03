@@ -6,6 +6,8 @@
 
 package socof;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -15,6 +17,15 @@ import java.util.Random;
  */
 public class CAD extends Thread{
     
+    ArrayList<Car> carList;
+    Car currentCar;
+    double elapsedTime;
+
+    public CAD(ArrayList<Car> carList, Car currentCar, double elapsedTime) {
+        this.carList = carList;
+        this.currentCar = currentCar;
+        this.elapsedTime = elapsedTime;
+    }
     
     public double calculateSpeed(Possition pInitial, Possition pFinal)
     {
@@ -76,6 +87,7 @@ public class CAD extends Thread{
             if (car1FuturePossition.axisX +2 < car2FuturePossition.axisX){
                 if (car1FuturePossition.axisY -2 > car2FuturePossition.axisY){
                     if (car1FuturePossition.axisY +2 < car2FuturePossition.axisY){
+                        System.out.println("detectCollision: acidente!");
                         return true;
                     }
                 }
@@ -90,9 +102,9 @@ public class CAD extends Thread{
         while (detectCollision(elapsedTime,car1,car2) == true)
         {
             int x=rand.nextInt(1); 
-            if (x==1){             //abrandar x==1
+            if (x==1){              //abrandar x==1
                 car1.setDirection(escalarPossition(car1.getDirection(),0.5));
-            }else{            //alterar direcção x==0
+            }else{                  //alterar direcção x==0
                 car1.setDirection(addPossition(car1.getDirection(),new Possition(2.0, 2.0)));
             }
         }
@@ -130,7 +142,14 @@ public class CAD extends Thread{
     }
     
      public void run() {
-        
+        for(Iterator<Car> i = carList.iterator(); i.hasNext(); ) {
+            Car otherCar = i.next();
+            //double elapsedTime, Car car1, Car car2
+            if (detectCollision(elapsedTime,currentCar,otherCar)){
+                System.out.println("run: current car: "+ currentCar.id);
+                avoidCollision(elapsedTime,currentCar,otherCar);
+            }
+        }
     }
     
 }

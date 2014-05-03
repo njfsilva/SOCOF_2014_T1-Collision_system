@@ -75,11 +75,13 @@ public class Car extends Thread{
        double timeInterval = 1000.0; // mili segundos
        while (currentPos.axisX<1000 || currentPos.axisY<1000 || currentPos.axisX>0 || currentPos.axisY>0)
        {
-           try {   
+           try {
                Thread.sleep((long)timeInterval);
                setElapsedTime(elapsedTime + timeInterval);
                currentPos=calculatePossition(elapsedTime/1000,initialPos,direction);
-               System.out.println(toString());
+               CAD DetectorColision = new CAD(carList,this,getElapsedTime());
+               DetectorColision.start();
+                System.out.println(toString());
                //escrever na memoria partilhada
                //detectar colisão
                //ler da memoria partilhada ?
