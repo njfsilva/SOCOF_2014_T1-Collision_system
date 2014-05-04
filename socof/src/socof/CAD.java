@@ -329,21 +329,21 @@ public class CAD extends Thread {
 
         Possition carFuturePossition = calculatePossition((currentCar.getTime() / 1000 + 5), currentCar.getInitialPos(), currentCar.getDirection());
         if (carFuturePossition.getAxisX() <= 0) {
-            System.out.println("car: " + currentCar.getCarId() + "; X inferior que 0");
+            //System.out.println("car: " + currentCar.getCarId() + "; X inferior que 0");
             return true;
         }
         if (carFuturePossition.getAxisY() <= 0) {
-            System.out.println("car: " + currentCar.getCarId() + "; Y inferior que 0");
+            //System.out.println("car: " + currentCar.getCarId() + "; Y inferior que 0");
 
             return true;
         }
         if (carFuturePossition.getAxisX() > 1000) {
-            System.out.println("car: " + currentCar.getCarId() + "; X superior que 1000");
+            //System.out.println("car: " + currentCar.getCarId() + "; X superior que 1000");
 
             return true;
         }
         if (carFuturePossition.getAxisY() > 1000) {
-            System.out.println("car: " + currentCar.getCarId() + "; Y superior que 1000");
+            //System.out.println("car: " + currentCar.getCarId() + "; Y superior que 1000");
 
             return true;
         }
@@ -410,11 +410,11 @@ public class CAD extends Thread {
                     detectedCollision = true;
                 }
             }
-            if (detectedCollision) {
-                currentCar.setDirection(auxCurentDirectionCar1);
-                currentCar.setTime(auxCurentTimeCar1);
-                currentCar.setInitialPos(auxInitialPosCar1);
-            }
+//            if (detectedCollision) {
+//                currentCar.setDirection(auxCurentDirectionCar1);
+//                currentCar.setTime(auxCurentTimeCar1);
+//                currentCar.setInitialPos(auxInitialPosCar1);
+//            }
         }
         //System.out.println("Collision Avoided!");
 
