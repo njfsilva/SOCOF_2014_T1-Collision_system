@@ -254,15 +254,17 @@ public class CAD extends Thread {
             for (Car otherCar : carList) {
                 while (detectCollision(currentCar, otherCar) == true || colisionWithLimiter(currentCar) == true) { //aqui devia passar a lista de carros e verificar dentro do metodo se algum dos carros vai colidar com outro ou com os limites. Como esta so detectas entre 2 e nos queremos entre N carros
                     //|| colisionWithLimiter(currentCar) == true
-                    //System.out.println("possivel acidente ente: " + currentCar.getCarId() + " e " + otherCar.getCarId() + "; currentCar: " + currentCar.getCurrentPos().toString() + " - othercar: " + otherCar.getCurrentPos().toString());
+                    System.out.println("possivel acidente ente: " + currentCar.getCarId() + " e " + otherCar.getCarId() + "; currentCar: " + currentCar.getCurrentPos().toString() + " - othercar: " + otherCar.getCurrentPos().toString());
                     //este avoidCollision devia acontecer apos saberes com o que vais colidar, tens abaixo o collisionWithLimiter mas se executares aqui o avoidCollision tomaste uma medida antes de saber
                     //que medida a tomar pq depende do tipo de colisao
                     avoidCollision(currentCar);
                     detectedCollision = true;
-                    currentCar.setDirection(auxCurentDirectionCar1);
-                    currentCar.setTime(auxCurentTimeCar1);
-                    currentCar.setInitialPos(auxInitialPosCar1);
                 }
+            }
+            if (detectedCollision) {
+                currentCar.setDirection(auxCurentDirectionCar1);
+                currentCar.setTime(auxCurentTimeCar1);
+                currentCar.setInitialPos(auxInitialPosCar1);
             }
         }
         //System.out.println("Collision Avoided!");
