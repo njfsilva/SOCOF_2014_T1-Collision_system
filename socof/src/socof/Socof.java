@@ -34,6 +34,7 @@ public class Socof {
     		car.setCarList(listOfOtherCars);
     		
     		car.start();
+    		//teste
     	}
     	
 		
