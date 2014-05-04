@@ -111,7 +111,7 @@ public class CAD extends Thread {
         //no fundo eh so validar se a accao tomada eh valida. So deve haver colisao, seja com parede ou com carros se todas as opcoes possiveis que o carro pode tomar derem colisao
         //tipo em frente eh a parede e tem 3 carros imediatamente ah sua volta e se travar bate-lhe o de tras
         Random rand = new Random();
-        switch (rand.nextInt(10)) {
+        switch (rand.nextInt(31)) {
             case 1:             //abrandar
                 car1.setInitialPos(car1.getCurrentPos());
                 car1.setTime(0);
@@ -182,22 +182,169 @@ public class CAD extends Thread {
                 //System.out.println("Alterar pos car: " + car1.getCarId() + " new direction: " + car1.getDirection().toString());
 
                 break;
+            case 11:
+                car1.setInitialPos(car1.getCurrentPos());
+                car1.setTime(0);
+                car1.setDirection(escalarPossition(car1.getDirection(), -0.8));
+                //System.out.println("Alterar pos car: " + car1.getCarId() + " new direction: " + car1.getDirection().toString());
+
+                break;
+            case 12:
+                car1.setInitialPos(car1.getCurrentPos());
+                car1.setTime(0);
+                car1.setDirection(escalarPossition(car1.getDirection(), -1.5));
+                //System.out.println("Alterar pos car: " + car1.getCarId() + " new direction: " + car1.getDirection().toString());
+
+                break;
+            case 13:
+                car1.setInitialPos(car1.getCurrentPos());
+                car1.setTime(0);
+                car1.setDirection(escalarPossition(car1.getDirection(), -1));
+                //System.out.println("Alterar pos car: " + car1.getCarId() + " new direction: " + car1.getDirection().toString());
+
+                break;
+            case 14:
+                car1.setInitialPos(car1.getCurrentPos());
+                car1.setTime(0);
+                 car1.setDirection(escalarPossition(car1.getDirection(), -2));
+                //System.out.println("Alterar pos car: " + car1.getCarId() + " new direction: " + car1.getDirection().toString());
+
+                break;
+            case 15:
+                car1.setInitialPos(car1.getCurrentPos());
+                car1.setTime(0);
+                car1.setDirection(addPossition(car1.getDirection(), new Possition(-6.0, -6.0, 0.0)));
+                //System.out.println("Alterar pos car: " + car1.getCarId() + " new direction: " + car1.getDirection().toString());
+
+                break;
+            case 16:
+                car1.setInitialPos(car1.getCurrentPos());
+                car1.setTime(0);
+                car1.setDirection(addPossition(car1.getDirection(), new Possition(0, -6.0, 0.0)));
+                //System.out.println("Alterar pos car: " + car1.getCarId() + " new direction: " + car1.getDirection().toString());
+
+                break;
+            case 17:
+                car1.setInitialPos(car1.getCurrentPos());
+                car1.setTime(0);
+                car1.setDirection(escalarPossition(car1.getDirection(), 0.1));
+                //System.out.println("Alterar pos car: " + car1.getCarId() + " new direction: " + car1.getDirection().toString());
+
+                break;
+            case 18:
+                car1.setInitialPos(car1.getCurrentPos());
+                car1.setTime(0);
+                car1.setDirection(escalarPossition(car1.getDirection(), -0.1));
+                //System.out.println("Alterar pos car: " + car1.getCarId() + " new direction: " + car1.getDirection().toString());
+
+                break;
+            case 19:
+                car1.setInitialPos(car1.getCurrentPos());
+                car1.setTime(0);
+                car1.setDirection(addPossition(car1.getDirection(), new Possition(-9.0, 0, 0.0)));
+                //System.out.println("Alterar pos car: " + car1.getCarId() + " new direction: " + car1.getDirection().toString());
+
+                break;
+            case 20:
+                car1.setInitialPos(car1.getCurrentPos());
+                car1.setTime(0);
+                car1.setDirection(escalarPossition(car1.getDirection(), 1.2));
+                //System.out.println("Alterar pos car: " + car1.getCarId() + " new direction: " + car1.getDirection().toString());
+
+                break;
+            case 21:
+                car1.setInitialPos(car1.getCurrentPos());
+                car1.setTime(0);
+                car1.setDirection(escalarPossition(car1.getDirection(), -0.6));
+                //System.out.println("Alterar pos car: " + car1.getCarId() + " new direction: " + car1.getDirection().toString());
+
+                break;
+            case 22:
+                car1.setInitialPos(car1.getCurrentPos());
+                car1.setTime(0);
+                car1.setDirection(escalarPossition(car1.getDirection(), 0.6));
+                //System.out.println("Alterar pos car: " + car1.getCarId() + " new direction: " + car1.getDirection().toString());
+
+                break;
+            case 23:
+                car1.setInitialPos(car1.getCurrentPos());
+                car1.setTime(0);
+                car1.setDirection(addPossition(car1.getDirection(), new Possition(0, 9.0, 0.0)));
+                //System.out.println("Alterar pos car: " + car1.getCarId() + " new direction: " + car1.getDirection().toString());
+
+                break;
+            case 24:
+                car1.setInitialPos(car1.getCurrentPos());
+                car1.setTime(0);
+                car1.setDirection(escalarPossition(car1.getDirection(), -1.2));
+                //System.out.println("Alterar pos car: " + car1.getCarId() + " new direction: " + car1.getDirection().toString());
+
+                break;
+            case 25:
+                car1.setInitialPos(car1.getCurrentPos());
+                car1.setTime(0);
+                car1.setDirection(addPossition(car1.getDirection(), new Possition(-6.0, 9.0, 0.0)));
+                //System.out.println("Alterar pos car: " + car1.getCarId() + " new direction: " + car1.getDirection().toString());
+
+                break;
+            case 26:
+                car1.setInitialPos(car1.getCurrentPos());
+                car1.setTime(0);
+                car1.setDirection(addPossition(car1.getDirection(), new Possition(3.0, -9.0, 0.0)));
+                //System.out.println("Alterar pos car: " + car1.getCarId() + " new direction: " + car1.getDirection().toString());
+
+                break;
+            case 27:
+                car1.setInitialPos(car1.getCurrentPos());
+                car1.setTime(0);
+                car1.setDirection(addPossition(car1.getDirection(), new Possition(6.0, -9.0, 0.0)));
+                //System.out.println("Alterar pos car: " + car1.getCarId() + " new direction: " + car1.getDirection().toString());
+
+                break;
+            case 28:
+                car1.setInitialPos(car1.getCurrentPos());
+                car1.setTime(0);
+                car1.setDirection(addPossition(car1.getDirection(), new Possition(6.0, -6.0, 0.0)));
+                //System.out.println("Alterar pos car: " + car1.getCarId() + " new direction: " + car1.getDirection().toString());
+
+                break;
+            case 29:
+                car1.setInitialPos(car1.getCurrentPos());
+                car1.setTime(0);
+                car1.setDirection(escalarPossition(car1.getDirection(), 1.3));
+                //System.out.println("Alterar pos car: " + car1.getCarId() + " new direction: " + car1.getDirection().toString());
+
+                break;
+            case 30:
+                car1.setInitialPos(car1.getCurrentPos());
+                car1.setTime(0);
+                car1.setDirection(escalarPossition(car1.getDirection(), -1.3));
+                //System.out.println("Alterar pos car: " + car1.getCarId() + " new direction: " + car1.getDirection().toString());
+
+                break;
         }
     }
 
     private boolean colisionWithLimiter(Car currentCar) {
 
-        Possition carFuturePossition = calculatePossition(currentCar.getTime() / 1000 + 5, currentCar.getInitialPos(), currentCar.getDirection());
+        Possition carFuturePossition = calculatePossition((currentCar.getTime() / 1000 + 5), currentCar.getInitialPos(), currentCar.getDirection());
         if (carFuturePossition.getAxisX() <= 0) {
+            System.out.println("car: " + currentCar.getCarId() + "; X inferior que 0");
             return true;
         }
         if (carFuturePossition.getAxisY() <= 0) {
+            System.out.println("car: " + currentCar.getCarId() + "; Y inferior que 0");
+
             return true;
         }
         if (carFuturePossition.getAxisX() > 1000) {
+            System.out.println("car: " + currentCar.getCarId() + "; X superior que 1000");
+
             return true;
         }
         if (carFuturePossition.getAxisY() > 1000) {
+            System.out.println("car: " + currentCar.getCarId() + "; Y superior que 1000");
+
             return true;
         }
         return false;
