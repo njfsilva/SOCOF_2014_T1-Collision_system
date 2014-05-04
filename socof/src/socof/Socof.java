@@ -24,7 +24,7 @@ public class Socof {
     	ArrayList<Car> listOfCars = new ArrayList<Car>();
     	
     	for(int i=0;i<numberOfCars;i++){
-    		listOfCars.add(new Car(String.format("%s", i+1), new Possition(0,0,0), new Possition(2,2,0)));
+    		listOfCars.add(new Car(String.format("%s", i+1), new Possition(2*i,i,0), new Possition(0.5*i,2*i,0)));
     	}
     	
     	for(Car car : listOfCars){
