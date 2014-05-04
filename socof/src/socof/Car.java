@@ -110,7 +110,7 @@ public class Car extends Thread{
     }
     
     public void run() {
-       double timeInterval = 1000.0; // mili segundos
+       double timeInterval = 2000.0; // mili segundos
        while (currentPos.axisX<1000 && currentPos.axisY<1000 && currentPos.axisX>=0 && currentPos.axisY>=0)
        {
            try {

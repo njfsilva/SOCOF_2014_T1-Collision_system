@@ -61,7 +61,7 @@ public class CAD extends Thread {
         return dividend / divisor;
     }
 
-    public boolean detectCollision(Car car1, Car car2) {
+    public boolean detectCollision(Car car1, Car car2) { //lista de carros aqui sempre. nunca usar car 1 e car 2. trabalha sempre com listas porque podes la meter 1 ou 50. 
         //PROBLEMAS DE SYNCRONISMO - REVER!!!!!!!!!!!!!
         Possition car1InitialPossition = car1.getInitialPos();
         Possition car1Direction = car1.getDirection();
@@ -104,7 +104,10 @@ public class CAD extends Thread {
     }
 
     public void avoidCollision(Car car1) {
-
+		//este metodo precisa de logica associada antes de fazer o carro mudar a direcao, podes usar o random como estas a fazer para ele tomar uma decisao qualquer mas
+    	//pelos menos deves validar se a accao eh possivel porque por exemplo se alterar a direcao para  direita e ah direita for a parede ele tem colisao na mesma
+    	//no fundo eh so validar se a accao tomada eh valida. So deve haver colisao, seja com parede ou com carros se todas as opcoes possiveis que o carro pode tomar derem colisao
+    	//tipo em frente eh a parede e tem 3 carros imediatamente ah sua volta e se travar bate-lhe o de tras
         Random rand = new Random();
         switch (rand.nextInt(10)) {
             case 1:             //abrandar
@@ -242,13 +245,16 @@ public class CAD extends Thread {
         while (detectedCollision == false) {
             detectedCollision = false;
             for (Car otherCar : carList) {
-                while (detectCollision(currentCar, otherCar) == true) {
+                while (detectCollision(currentCar, otherCar) == true) { //aqui devia passar a lista de carros e verificar dentro do metodo se algum dos carros vai colidar com outro ou com os limites. Como esta so detectas entre 2 e nos queremos entre N carros
                     System.out.println("possivel acidente ente: " + currentCar.getCarId() + " e " + otherCar.getCarId() + "; currentCar: " + currentCar.getCurrentPos().toString() + " - othercar: " + otherCar.getCurrentPos().toString());
+                    
+                    //este avoidCollision devia acontecer apos saberes com o que vais colidar, tens abaixo o collisionWithLimiter mas se executares aqui o avoidCollision tomaste uma medida antes de saber
+                    //que medida a tomar pq depende do tipo de colisao
                     avoidCollision(currentCar);
                     detectedCollision = true;
                 }
             }
-            if (colisionWithLimiter(currentCar)) {
+            if (colisionWithLimiter(currentCar)) { //devia ser uma subrotina do detectCollison
              //   System.out.println("possivel inpacto com os limites da area");
                 //avoidCollision(currentCar);
                 //   detectedCollision = true;
