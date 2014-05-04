@@ -32,7 +32,7 @@ public class Socof {
     				new Car(
     						String.format("%s", i+1),
     						new Possition(random.nextInt(1001),random.nextInt(1001),random.nextInt(1001)),
-    						new Possition(random.nextInt(1001),random.nextInt(1001),random.nextInt(1001))
+    						new Possition(random.nextInt(21),random.nextInt(21),random.nextInt(21))
 						)
     			);
     	}

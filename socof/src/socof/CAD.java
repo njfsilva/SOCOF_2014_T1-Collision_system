@@ -71,7 +71,10 @@ public class CAD extends Thread {
         //System.out.println("w0:" + w0.toString());    
         double timeOfPossibleCollision = closestPointOfApproach(w0, calculateSpeedVector(car1InitialPossition, car1CurrentPossition, car1.getTime()),
                 calculateSpeedVector(car2InitialPossition, car2CurrentPossition, car2.getTime()));
-
+        if (timeOfPossibleCollision < 0) {
+            return false;
+        }
+        //System.out.println("timeOfPossibleCollision: " + timeOfPossibleCollision);
         Possition car1FuturePossition = calculatePossition(timeOfPossibleCollision, car1InitialPossition, car1Direction);
         Possition car2FuturePossition = calculatePossition(timeOfPossibleCollision, car2InitialPossition, car2Direction);
 
@@ -79,13 +82,13 @@ public class CAD extends Thread {
     }
 
     private boolean detectCollision(Possition car1FuturePossition, Possition car2FuturePossition) {
-  
-        if (car1FuturePossition.getAxisX() <= 0 && car1FuturePossition.getAxisX() > 1000 
-        		&& car1FuturePossition.getAxisY() <= 0 && car1FuturePossition.getAxisY() > 1000) {
-        	
-            System.out.println("Detected Out Of Bounds Collison");
-            return true;
-        }
+
+//        if (car1FuturePossition.getAxisX() <= 0 && car1FuturePossition.getAxisX() > 1000
+//                && car1FuturePossition.getAxisY() <= 0 && car1FuturePossition.getAxisY() > 1000) {
+//
+//            System.out.println("Detected Out Of Bounds Collison");
+//            return true;
+//        }
         if (car1FuturePossition.getAxisX() - 2 <= car2FuturePossition.getAxisX()) {
             if (car1FuturePossition.getAxisX() + 2 >= car2FuturePossition.getAxisX()) {
                 if (car1FuturePossition.getAxisY() - 2 <= car2FuturePossition.getAxisY()) {
@@ -184,20 +187,20 @@ public class CAD extends Thread {
 
     private boolean colisionWithLimiter(Car currentCar) {
 
-        Possition carFuturePossition = calculatePossition(currentCar.getTime() + 1, currentCar.getInitialPos(), currentCar.getDirection());
-        //System.out.println("pos actual: " + currentCar.getCurrentPos().toString() + "; parede future pos: " + carFuturePossition.toString());
+        Possition carFuturePossition = calculatePossition(currentCar.getTime() / 1000 + 5, currentCar.getInitialPos(), currentCar.getDirection());
         if (carFuturePossition.getAxisX() <= 0) {
-            if (carFuturePossition.getAxisX() >= 1000) {
-                if (carFuturePossition.getAxisY() <= 0) {
-                    if (carFuturePossition.getAxisY() >= 1000) {
-                        System.out.println("parede: car: +" + currentCar.getCarId() + "; pos: " + carFuturePossition.toString());
-                        return true;
-                    }
-                }
-            }
+            return true;
+        }
+        if (carFuturePossition.getAxisY() <= 0) {
+            return true;
+        }
+        if (carFuturePossition.getAxisX() > 1000) {
+            return true;
+        }
+        if (carFuturePossition.getAxisY() > 1000) {
+            return true;
         }
         return false;
-        //        return carFuturePossition.getAxisX() <= 0 && carFuturePossition.getAxisX() > 1000 && carFuturePossition.getAxisY() <= 0 && carFuturePossition.getAxisY() > 1000;
 
     }
 
