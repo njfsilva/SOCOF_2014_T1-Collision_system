@@ -32,11 +32,11 @@ public class Socof {
 			ArrayList<Car> listOfOtherCars = (ArrayList<Car>) listOfCars.clone();
     		listOfOtherCars.remove(car);
     		car.setCarList(listOfOtherCars);
-    	}
-    	
-    	for(Car car : listOfCars){
+    		
     		car.start();
     	}
+    	
+		
     	
     	/*
         Car car1 = new Car("1", new Possition(0,0,0), new Possition(2,2,0));
