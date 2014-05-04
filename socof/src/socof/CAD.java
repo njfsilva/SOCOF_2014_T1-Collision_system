@@ -6,11 +6,7 @@
 package socof;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Random;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Collision avoidance and detection
@@ -83,8 +79,11 @@ public class CAD extends Thread {
     }
 
     private boolean detectCollision(Possition car1FuturePossition, Possition car2FuturePossition) {
-
-        if (car1FuturePossition.getAxisX() <= 0 && car1FuturePossition.getAxisX() > 1000 && car1FuturePossition.getAxisY() <= 0 && car1FuturePossition.getAxisY() > 1000) {
+  
+        if (car1FuturePossition.getAxisX() <= 0 && car1FuturePossition.getAxisX() > 1000 
+        		&& car1FuturePossition.getAxisY() <= 0 && car1FuturePossition.getAxisY() > 1000) {
+        	
+            System.out.println("Detected Out Of Bounds Collison");
             return true;
         }
         if (car1FuturePossition.getAxisX() - 2 <= car2FuturePossition.getAxisX()) {
@@ -186,7 +185,7 @@ public class CAD extends Thread {
     private boolean colisionWithLimiter(Car currentCar) {
 
         Possition carFuturePossition = calculatePossition(currentCar.getTime() + 1, currentCar.getInitialPos(), currentCar.getDirection());
-        System.out.println("pos actual: " + currentCar.getCurrentPos().toString() + "; parede future pos: " + carFuturePossition.toString());
+        //System.out.println("pos actual: " + currentCar.getCurrentPos().toString() + "; parede future pos: " + carFuturePossition.toString());
         if (carFuturePossition.getAxisX() <= 0) {
             if (carFuturePossition.getAxisX() >= 1000) {
                 if (carFuturePossition.getAxisY() <= 0) {
@@ -254,7 +253,7 @@ public class CAD extends Thread {
             for (Car otherCar : carList) {
                 while (detectCollision(currentCar, otherCar) == true || colisionWithLimiter(currentCar) == true) { //aqui devia passar a lista de carros e verificar dentro do metodo se algum dos carros vai colidar com outro ou com os limites. Como esta so detectas entre 2 e nos queremos entre N carros
                     //|| colisionWithLimiter(currentCar) == true
-                    System.out.println("possivel acidente ente: " + currentCar.getCarId() + " e " + otherCar.getCarId() + "; currentCar: " + currentCar.getCurrentPos().toString() + " - othercar: " + otherCar.getCurrentPos().toString());
+                    //System.out.println("possivel acidente ente: " + currentCar.getCarId() + " e " + otherCar.getCarId() + "; currentCar: " + currentCar.getCurrentPos().toString() + " - othercar: " + otherCar.getCurrentPos().toString());
                     //este avoidCollision devia acontecer apos saberes com o que vais colidar, tens abaixo o collisionWithLimiter mas se executares aqui o avoidCollision tomaste uma medida antes de saber
                     //que medida a tomar pq depende do tipo de colisao
                     avoidCollision(currentCar);

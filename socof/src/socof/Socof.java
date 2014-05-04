@@ -6,6 +6,7 @@
 package socof;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  *
@@ -20,11 +21,20 @@ public class Socof {
         // TODO code application logic here
         //Car(String id, Possition initialPos, Possition direction, ArrayList<Car> carList)
     	
-    	int numberOfCars = 3;
+    	int numberOfCars = 10;
     	ArrayList<Car> listOfCars = new ArrayList<Car>();
     	
     	for(int i=0;i<numberOfCars;i++){
-    		listOfCars.add(new Car(String.format("%s", i+1), new Possition(2*i,i,0), new Possition(0.5*i,2*i,0)));
+    		
+    		Random random = new Random();
+    		
+    		listOfCars.add(
+    				new Car(
+    						String.format("%s", i+1),
+    						new Possition(random.nextInt(1001),random.nextInt(1001),random.nextInt(1001)),
+    						new Possition(random.nextInt(1001),random.nextInt(1001),random.nextInt(1001))
+						)
+    			);
     	}
     	
     	for(Car car : listOfCars){
@@ -34,7 +44,6 @@ public class Socof {
     		car.setCarList(listOfOtherCars);
     		
     		car.start();
-    		//teste
     	}
     	
 		

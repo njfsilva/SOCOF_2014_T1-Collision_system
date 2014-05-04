@@ -110,7 +110,7 @@ public class Car extends Thread{
     }
     
     public void run() {
-       double timeInterval = 2000.0; // mili segundos
+       double timeInterval = 1000; // mili segundos
        while (currentPos.axisX<1000 && currentPos.axisY<1000 && currentPos.axisX>=0 && currentPos.axisY>=0)
        {
            try {
@@ -144,7 +144,7 @@ public class Car extends Thread{
 
     @Override
     public String toString() {
-        return "carro " + id + ": x=" + currentPos.axisX + " y="+ currentPos.axisY + "; ElapsedTime: "+(elapsedTime/1000);
+        return "carro " + id + ": x=" + currentPos.axisX + " y="+ currentPos.axisY + " z="+ currentPos.axisZ + "; ElapsedTime: "+(elapsedTime/1000);
     }
     
 }
