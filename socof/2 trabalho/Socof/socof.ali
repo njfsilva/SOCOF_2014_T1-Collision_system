@@ -4,7 +4,7 @@ A -gnatA
 P ZX
 R nnnnnnnvnvnnnnnnnnvnnvnvvvnnvnnvnvnnvnnvnnnnvnnnnvnvnnnnnnvnnnnvnnnnnnvnnnnnv1nv1+nnnv1+nn
 
-U socof%b		socof.adb		bf88246b NE OO SU
+U socof%b		socof.adb		3dc787d1 NE OO SU
 W ada%s			ada.ads			ada.ali
 W ada.calendar.delays%s	a-caldel.adb		a-caldel.ali
 W ada.exceptions%s	a-except.adb		a-except.ali
@@ -46,7 +46,7 @@ D interfac.ads		20120510125814 129923ea
 D i-c.ads		20120510125814 5421119b
 D i-cstrin.ads		20120510125814 341d0ddf
 D i-cstrea.ads		20120510125814 1bd72c32
-D socof.adb		20140610184058 79227e1f
+D socof.adb		20140610201652 fb6ddda5
 D system.ads		20120510125846 6daf90c4
 D s-atacco.ads		20120510125818 4c36d12f
 D s-crtl.ads		20120510125824 ac77b159
@@ -80,9 +80,9 @@ D s-win32.ads		20120510125840 07238fa2
 X 1 ada.ads
 16K9*Ada 19e8 23|1r16 1r28 1r63 1r75 2r6
 X 2 a-calend.ads
-38I9*Time 23|91r28
-52V13*Clock{38I9} 23|91s49
-94V14*"+"{38I9} 23|97s33
+38I9*Time 23|140r28
+52V13*Clock{38I9} 23|140s49
+94V14*"+"{38I9} 23|146s33
 X 6 a-inteio.ads
 18K13*Integer_Text_IO[16|45] 23|1w32 1r79
 X 8 a-numeri.ads
@@ -92,51 +92,62 @@ X 10 a-ngelfu.ads
 X 15 a-textio.ads
 49K13*Text_IO 471e16 23|1w20 1r67
 X 18 calendar.ads
-18K9*Calendar=18:30 23|1w6 1r53 91r19 91r40
+18K9*Calendar=18:30 23|1w6 1r53 140r19 140r40
 X 23 socof.adb
-3U11*Socof 3b11 133l5 133t10
-5w14 WheelRotation 41b19 51l8 51t21
-6U17 Write 6>24 42b17 45l11 45t16
-6i24 NewSpeed{integer} 42b24 44r26
-7U17 Read 7<23 47b17 50l11 50t15
-7i23 CurSpeed{integer} 47b23 49m10
-9i7 CurrentSpeed{integer} 44r10 49r22
-12w14 BreakPressure 53b19 62l8 62t21 105r13
-13U17 Write 13>24 54b17 57l11 57t16
-13f24 NewPressure{float} 54b24 56r22
-14U17 Read 14<23 58b17 61l11 61t15 105s27
-14f23 NewPressure{float} 58b23 60m10
-16f7 Pressure{float} 56r10 60r25
-19w14 AcelaratorState 64b19 74l8 74t23
-20U17 Write 20>24 65b17 68l11 68t16
-20b24 newState{boolean} 65b24 67r24
-21U17 Read 21<23 70b17 73l11 73t15
-21b23 CurState{boolean} 70b23 72m10
-23b7 Acelarator{boolean} 67r10 72r22
-26w14 DistanceValue 76b19 86l8 86t21 96r10
-27U17 Write 27>24 77b17 80l11 80t16 96s24
-27f24 newDistance{float} 77b24 79r22
-28U17 Read 28<23 82b17 85l11 85t15
-28f23 CurDistance{float} 82b23 84m10
-30f7 Distance{float} 79r10 84r25
-33t9 VehicleDetectionSensor 88b14 99l8 99t30
-35t9 Brake 101b14 109l8 109t13
-36Y13 Request 36<21 104b17 107l14 107t21
-36f21 NewPressure{float} 105m32 105r32
-90o7 Interval{duration} 97r35
-91i7 Next_Time{2|38I9} 95r22 97m10 97r23
-92f7 Distance{float} 96r31
-104f25 NewPressure{float}
-111V13 ConverKmhToMs{float} 111b13 111>28 114l8 114t21
-111f28 Kmh{float} 113r21
-116V13 CalcStoppingDistance{float} 116b13 116>35 116>39 116>52 119l8 119t28
-116f35 Kmh{float} 118r22
-116f39 CoefFriction{float} 118r56
-116f52 BrakeAct{float} 118r47
-121V13 CalculateAcelaration{float} 121b13 121>35 121>44 124l8 124t28
-121f35 Vinicial{float} 123r16
-121f44 Dist{float} 123r34
-126V13 CalculateTime{float} 126b13 126>28 126>37 129l8 129t21
-126f28 Vinicial{float} 128r25
-126f37 Dist{float} 128r19
+3U11*Socof 3b11 176l5 176t10
+5w14 WheelRotation 54b19 64l8 64t21 157r13
+6U17 Write 6>24 55b17 58l11 58t16 157s27
+6f24 NewSpeed{float} 55b24 57r26
+7U17 Read 7<23 60b17 63l11 63t15
+7f23 CurSpeed{float} 60b23 62m10
+9f7 CurrentSpeed{float} 57r10 62r21
+12w14 BreakPressure 66b19 78l8 78t21 155r13
+13U17 Write 13>24 13>38 67b17 71l11 71t16
+13f24 Vi{float} 67b24 69r22
+13f38 Dist{float} 67b27 70r22
+14U17 Read 14<23 14<38 73b17 77l11 77t15 155s27
+14f23 Vi{float} 73b23 75m10
+14f38 Dist{float} 73b26 76m10
+16f7 Vinicial{float} 69r10 75r15
+16f16 Distance{float} 70r10 76r18
+19w14 AcelaratorState 80b19 90l8 90t23
+20U17 Write 20>24 81b17 84l11 84t16
+20b24 newState{boolean} 81b24 83r24
+21U17 Read 21<23 86b17 89l11 89t15
+21b23 CurState{boolean} 86b23 88m10
+23b7 Acelarator{boolean} 83r10 88r22
+26w14 DistanceValue 92b19 102l8 102t21 145r10
+27U17 Write 27>24 93b17 96l11 96t16 145s24
+27f24 newDistance{float} 93b24 95r22
+28U17 Read 28<23 98b17 101l11 101t15
+28f23 CurDistance{float} 98b23 100m10
+30f7 Distance{float} 95r10 100r25
+38t9 VehicleDetectionSensor 137b14 148l8 148t30
+40t9 Brake 150b14 160l8 160t13
+41Y13 Request 41<21 41<24 154b17 158l14 158t21
+41f21 Vi{float} 155m32 155r32 156r52
+41f24 Dist{float} 155m35 155r35 156r55
+44t9 Wheel 162b14 170l8 170t13
+45Y13 Request 45<21 166b17 168l14 168t21
+45f21 NewSpeed{float} 167r29
+110V13 CalculateAcelaration{float} 110b13 110>35 110>44 113l8 113t28 156s31
+110f35 Vinicial{float} 112r16
+110f44 Dist{float} 112r34
+115V13 ConverKmhToMs{float} 115b13 115>28 118l8 118t21
+115f28 Kmh{float} 117r21
+120V13 CalcStoppingDistance{float} 120b13 120>35 120>39 120>52 123l8 123t28
+120f35 Kmh{float} 122r22
+120f39 CoefFriction{float} 122r56
+120f52 BrakeAct{float} 122r47
+125V13 CalculateTime{float} 125b13 125>28 125>37 128l8 128t21
+125f28 Vinicial{float} 127r25
+125f37 Dist{float} 127r19
+139o7 Interval{duration} 146r35
+140i7 Next_Time{2|38I9} 144r22 146m10 146r23
+141f7 Distance{float} 145r31
+151f7 ResAcelaration{float} 156m13 157r33
+154f25 Vi{float}
+154f28 Dist{float}
+163f7 CurrentSpeed{float} 167m13
+166f25 NewSpeed{float}
 
