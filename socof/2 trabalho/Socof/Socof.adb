@@ -2,12 +2,21 @@ with Calendar, Ada.Text_IO,Ada.Integer_Text_IO; use Calendar, Ada.Text_IO,Ada.In
 with Ada.Numerics.Generic_Elementary_Functions;
 procedure Socof is
 
-   protected WheelRotation is
+   Interval  : constant Duration := Duration(0.2);--Duration (43_200);
+
+   protected WheelAcelaration is
       procedure Write (NewSpeed : in Float);
       procedure Read (CurSpeed : out Float);
    private
       CurrentSpeed : Float := 0.0;
-   end WheelRotation;
+   end WheelAcelaration;
+
+   protected WheelVelocity is
+      procedure Write (NewSpeed : in Float);
+      procedure Read (CurSpeed : out Float);
+   private
+      CurrentSpeed : Float := 0.0;
+   end WheelVelocity;
 
    protected BreakPressure is
       procedure Write (Vi : in Float;Dist: in Float);
@@ -45,13 +54,19 @@ procedure Socof is
       entry Request(NewSpeed : out Float);
    end;
 
+   task Accelerator  is
+      entry Request(newState : out Boolean);
+   end;
+
+   task CAS  is
+      entry Request(CurSpeed : out Float);
+      entry Request2(CurDistance : out Float);
+   end;
 
 
 
 
-
-
-   protected body WheelRotation is
+   protected body WheelAcelaration is
       procedure Write (NewSpeed : Float) is
       begin
          CurrentSpeed := NewSpeed;
@@ -61,7 +76,19 @@ procedure Socof is
       begin
          CurSpeed:= CurrentSpeed;
       end Read;
-   end WheelRotation;
+   end WheelAcelaration;
+
+   protected body WheelVelocity is
+      procedure Write (NewSpeed : Float) is
+      begin
+         CurrentSpeed := NewSpeed;
+      end Write;
+
+      procedure Read (CurSpeed : out Float) is
+      begin
+         CurSpeed:= CurrentSpeed;
+      end Read;
+   end WheelVelocity;
 
    protected body BreakPressure is
       procedure Write (Vi,Dist : Float) is
@@ -117,6 +144,11 @@ procedure Socof is
       return (5.0 * Kmh)/18.0;
    end ConverKmhToMs;
 
+   function ConverMsToKmh (Kmh : Float) return Float is
+   begin
+      return (18.0 * Kmh)/5.0;
+   end ConverMsToKmh;
+
    function CalcStoppingDistance (Kmh,CoefFriction,BrakeAct : Float) return Float is
    begin
       return 8.0*( ((Kmh/3.6)**2) / (2.0*9.81*BrakeAct*CoefFriction));
@@ -135,8 +167,6 @@ procedure Socof is
 
 
    task body VehicleDetectionSensor is
-
-      Interval  : constant Duration := Duration(0.2);--Duration (43_200);
       Next_Time : Calendar.Time     := Calendar.Clock;
       Distance : Float := 20.0;
    begin
@@ -154,22 +184,79 @@ procedure Socof is
          accept Request(Vi,Dist : out Float) do
             BreakPressure.Read(Vi,Dist);
             ResAcelaration := CalculateAcelaration(Vi,Dist);
-            WheelRotation.Write(ResAcelaration);
+            WheelAcelaration.Write(ResAcelaration);
          end Request;
       end loop;
    end Brake;
 
    task body Wheel is
-      CurrentSpeed : Float := 30.0;
+      CurrentSpeedMs : Float;
+      NewCurrentSpeed : Float;
+      CurrentSpeedKmh : Float := 30.0;
+      Next_Time : Calendar.Time     := Calendar.Clock;
    begin
       loop
+         delay until Next_Time;
          accept Request(NewSpeed : out Float) do
-            CurrentSpeed := NewSpeed;
-         end Request;
+            WheelAcelaration.Read(NewSpeed);
+            CurrentSpeedMs := ConverKmhToMs(CurrentSpeedKmh);
+            NewCurrentSpeed := CurrentSpeedMs + NewSpeed * 0.2;     --REVER!!!!
+            CurrentSpeedKmh := ConverMsToKmh(NewCurrentSpeed);
+            WheelVelocity.Write(CurrentSpeedKmh);
+            Next_Time := Next_Time + Interval;
+        end Request;
       end loop;
    end Wheel;
 
+   task body Accelerator is
+      Acelarator : Boolean := True;
+   begin
+      loop
+         accept Request(newState : out Boolean) do
+            AcelaratorState.Read(newState);
+            Acelarator := newState;
+            if newState = True Then
+               WheelAcelaration.Write(0.0);
+            end if;
+         end Request;
+      end loop;
+   end Accelerator;
 
+   task body CAS is
+      Acelarator : Boolean := True;
+      CurrentSpeed : Float;
+      DistanceNextObstacle : Float;
+      EstimatedSafeDistance : Float;
+      EstimatedSafeBrakeTime : Float := 0.0;
+      I : Integer := 1;
+   begin
+      loop
+         accept Request(CurSpeed : out Float) do
+            WheelVelocity.Read(CurSpeed);
+            CurrentSpeed := CurSpeed;
+         end Request;
+         accept Request2(CurDistance : out Float) do
+            DistanceValue.Read(CurDistance);
+            DistanceNextObstacle := CurDistance;
+         end Request2;
+         if  DistanceNextObstacle >= 200.0 then
+            AcelaratorState.Write(True);
+         else
+            loop
+               EstimatedSafeDistance := CalcStoppingDistance(CurrentSpeed,0.7,Float(I));
+               I := I+1;
+               exit when I = 9 or EstimatedSafeDistance < DistanceNextObstacle;
+            end loop;
+            EstimatedSafeBrakeTime :=CalculateTime(CurrentSpeed,EstimatedSafeDistance);
+            if EstimatedSafeBrakeTime > 3.0 then
+               put("ALERT Carro");
+            else
+               AcelaratorState.Write(False);
+               BreakPressure.Write(CurrentSpeed,DistanceNextObstacle);    -- REVER DistanceNextObstacle vs EstimatedSafeDistance
+            end if;
+         end if;
+      end loop;
+   end CAS;
 
 begin
    delay 3.0;
