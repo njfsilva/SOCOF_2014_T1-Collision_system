@@ -1,4 +1,6 @@
-with Calendar, Ada.Text_IO,Ada.Integer_Text_IO; use Calendar, Ada.Text_IO,Ada.Integer_Text_IO;
+with Calendar, Ada.Text_IO,Ada.Integer_Text_IO, Ada.Float_Text_IO;
+use Calendar, Ada.Text_IO,Ada.Integer_Text_IO;
+use Ada.Float_Text_IO;
 with Ada.Numerics.Generic_Elementary_Functions;
 with Ada.Numerics.Discrete_Random;
 procedure Socof is
@@ -180,7 +182,7 @@ procedure Socof is
       RandomValue : Integer;
       Friction : Float := 0.7;
    begin
-      put("VehicleDetectionSensor");
+      Put_Line("VehicleDetectionSensor");
       Reset (G);
       loop
          delay until Next_Time;
@@ -190,6 +192,7 @@ procedure Socof is
             Distance := 200.0;
          end if;
          RandomValue := Random(G);
+         --Put(RandomValue);
          Distance := Distance - float(RandomValue);
          if Distance < 0.0 then
             Distance := 0.0;
@@ -203,6 +206,7 @@ procedure Socof is
       VelocityInital, Distance : Float;
    begin
       --delay 0.4;
+      Put_Line("Brake");
       loop
          delay until Next_Time;
          accept Request(Vi,Dist : out Float) do
@@ -210,6 +214,7 @@ procedure Socof is
             VelocityInital := Vi;
             Distance := Dist;
          end Request;
+         --put("here");
          Next_Time := Next_Time + Interval;
          ResAcelaration := CalculateAcelaration(VelocityInital,Distance);
          WheelAcelaration.Write(ResAcelaration);
@@ -223,12 +228,18 @@ procedure Socof is
       NewAcelaration : Float;
       Next_Time : Calendar.Time     := Calendar.Clock;
    begin
+      Put_Line("Wheel");
       loop
          delay until Next_Time;
-         accept Request(NewSpeed : out Float) do
-            WheelAcelaration.Read(NewSpeed);
-            NewAcelaration := NewSpeed;
-         end Request;
+         Select
+            accept Request(NewSpeed : out Float) do
+               WheelAcelaration.Read(NewSpeed);
+               NewAcelaration := NewSpeed;
+            end Request;
+         or
+            delay 0.1;
+         end select;
+         --put("wheel");
          CurrentSpeedMs := ConverKmhToMs(CurrentSpeedKmh);
          NewCurrentSpeed := CurrentSpeedMs + NewAcelaration * 0.2;     --REVER!!!!
          CurrentSpeedKmh := ConverMsToKmh(NewCurrentSpeed);
@@ -242,6 +253,7 @@ procedure Socof is
       Acelarator : Boolean := True;
    begin
       --delay 0.4;
+      Put_Line("Accelerator");
       loop
          delay until Next_Time;
          accept Request(newState : out Boolean) do
@@ -265,9 +277,10 @@ procedure Socof is
       EstimatedSafeBrakeTime : Float := 0.0;
       I : Integer := 1;
    begin
-      put("cas");
+      Put_Line("cas");
       --delay 0.4;
       loop
+         --Put_Line("CAS Loop");
          delay until Next_Time;
          select
             accept Request(CurSpeed : out Float) do
@@ -280,7 +293,13 @@ procedure Socof is
                Friction := Fric;
                DistanceNextObstacle := CurDistance;
             end Request2;
+         or
+            delay 0.1;
          end select;
+         put_line("new");
+         put(DistanceNextObstacle);
+         put(" - ");
+         put(CurrentSpeed);
          if  DistanceNextObstacle >= 200.0 then
             AcelaratorState.Write(True);
          else
@@ -291,7 +310,7 @@ procedure Socof is
             end loop;
             EstimatedSafeBrakeTime :=CalculateTime(CurrentSpeed,EstimatedSafeDistance);
             if EstimatedSafeBrakeTime > 3.0 then
-               put("ALERT Carro");
+               Put_Line("ALERT Carro");
             else
                AcelaratorState.Write(False);
                BreakPressure.Write(CurrentSpeed,DistanceNextObstacle);    -- REVER DistanceNextObstacle vs EstimatedSafeDistance
@@ -302,5 +321,5 @@ procedure Socof is
    end CAS;
 
 begin
-   put("hello");
+   Put_Line("hello");
 end Socof;
