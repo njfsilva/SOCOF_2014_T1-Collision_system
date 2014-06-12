@@ -180,6 +180,7 @@ procedure Socof is
       RandomValue : Integer;
       Friction : Float := 0.7;
    begin
+      put("VehicleDetectionSensor");
       Reset (G);
       loop
          delay until Next_Time;
@@ -201,6 +202,7 @@ procedure Socof is
       ResAcelaration : Float;
       VelocityInital, Distance : Float;
    begin
+      --delay 0.4;
       loop
          delay until Next_Time;
          accept Request(Vi,Dist : out Float) do
@@ -239,6 +241,7 @@ procedure Socof is
       Next_Time : Calendar.Time     := Calendar.Clock;
       Acelarator : Boolean := True;
    begin
+      --delay 0.4;
       loop
          delay until Next_Time;
          accept Request(newState : out Boolean) do
@@ -262,6 +265,8 @@ procedure Socof is
       EstimatedSafeBrakeTime : Float := 0.0;
       I : Integer := 1;
    begin
+      put("cas");
+      --delay 0.4;
       loop
          delay until Next_Time;
          select
@@ -297,5 +302,5 @@ procedure Socof is
    end CAS;
 
 begin
-   delay 3.0;
+   put("hello");
 end Socof;
