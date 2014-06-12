@@ -1,5 +1,6 @@
 with Calendar, Ada.Text_IO,Ada.Integer_Text_IO; use Calendar, Ada.Text_IO,Ada.Integer_Text_IO;
 with Ada.Numerics.Generic_Elementary_Functions;
+with Ada.Numerics.Discrete_Random;
 procedure Socof is
 
    Interval  : constant Duration := Duration(0.2);--Duration (43_200);
@@ -169,11 +170,25 @@ procedure Socof is
    task body VehicleDetectionSensor is
       Next_Time : Calendar.Time     := Calendar.Clock;
       Distance : Float := 200.0;
+      subtype RangeDistance is Integer range 1 .. 50;
+      package Random_Distance is new Ada.Numerics.Discrete_Random (RangeDistance);
+      use Random_Distance;
+      G : Generator;
+      RandomValue : integer;
    begin
+      Reset (G);
       loop
          delay until Next_Time;
          DistanceValue.Write (Distance);
          Next_Time := Next_Time + Interval;
+         if Distance = 0.0 then
+            Distance := 200.0;
+         end if;
+         RandomValue := Random(G);
+         Distance := Distance - float(RandomValue);
+         if Distance < 0.0 then
+            Distance := 0.0;
+         end if;
       end loop;
    end VehicleDetectionSensor;
 
