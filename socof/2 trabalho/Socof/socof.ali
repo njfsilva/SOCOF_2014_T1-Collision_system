@@ -2,9 +2,9 @@ V "GNAT Lib v2012"
 M P W=b
 A -gnatA
 P ZX
-R nnnnnnnvnvvnnnnnnnvnnvnvvvnnvnnvnvnnvnnvnnnnvnnnnvnvnnnnnnvnnnnvnnnnnnvnnnnnv2nv1+nnnv1+nn
+R nnnnnnnvnvvnnnnnnnvnnvnvvvnnvnnvnvnnvnnvnnvnvnnnnvnvnnnnnnvnnnnvnnnnnnvnnnv2nv2nv1+nnnv1+nn
 
-U socof%b		socof.adb		ba877bfb NE OO SU
+U socof%b		socof.adb		26279451 NE OO SU
 W ada%s			ada.ads			ada.ali
 W ada.calendar.delays%s	a-caldel.adb		a-caldel.ali
 W ada.exceptions%s	a-except.adb		a-except.ali
@@ -46,7 +46,7 @@ D interfac.ads		20120510125814 129923ea
 D i-c.ads		20120510125814 5421119b
 D i-cstrin.ads		20120510125814 341d0ddf
 D i-cstrea.ads		20120510125814 1bd72c32
-D socof.adb		20140611162102 7c2d218f
+D socof.adb		20140612120606 e08dce25
 D system.ads		20120510125846 6daf90c4
 D s-atacco.ads		20120510125818 4c36d12f
 D s-crtl.ads		20120510125824 ac77b159
@@ -91,11 +91,11 @@ X 10 a-ngelfu.ads
 39k22*Generic_Elementary_Functions 179e46 23|2w19
 X 15 a-textio.ads
 49K13*Text_IO 471e16 23|1w20 1r67
-242U14*Put 23|252s16
+242U14*Put 23|256s16
 X 18 calendar.ads
 18K9*Calendar=18:30 23|1w6 1r53 170r19 170r40 196r19 196r40
 X 23 socof.adb
-3U11*Socof 3b11 263l5 263t10
+3U11*Socof 3b11 267l5 267t10
 5o4 Interval{duration} 176r35 206r38
 7w14 WheelAcelaration 69b19 79l8 79t24 187r13 201r13 219r16
 8U17 Write 8>24 70b17 73l11 73t16 187s30 219s33
@@ -103,14 +103,14 @@ X 23 socof.adb
 9U17 Read 9<23 75b17 78l11 78t15 201s30
 9f23 CurSpeed{float} 75b23 77m10
 11f7 CurrentSpeed{float} 72r10 77r21
-14w14 WheelVelocity 81b19 91l8 91t21 205r13 235r13
+14w14 WheelVelocity 81b19 91l8 91t21 205r13 237r16
 15U17 Write 15>24 82b17 85l11 85t16 205s27
 15f24 NewSpeed{float} 82b24 84r26
-16U17 Read 16<23 87b17 90l11 90t15 235s27
+16U17 Read 16<23 87b17 90l11 90t15 237s30
 16f23 CurSpeed{float} 87b23 89m10
 18f7 CurrentSpeed{float} 84r10 89r21
-21w14 BreakPressure 93b19 105l8 105t21 185r13 255r16
-22U17 Write 22>24 22>38 94b17 98l11 98t16 255s30
+21w14 BreakPressure 93b19 105l8 105t21 185r13 259r16
+22U17 Write 22>24 22>38 94b17 98l11 98t16 259s30
 22f24 Vi{float} 94b24 96r22
 22f38 Dist{float} 94b27 97r22
 23U17 Read 23<23 23<38 100b17 104l11 104t15 185s27
@@ -118,16 +118,16 @@ X 23 socof.adb
 23f38 Dist{float} 100b26 103m10
 25f7 Vinicial{float} 96r10 102r15
 25f16 Distance{float} 97r10 103r18
-28w14 AcelaratorState 107b19 117l8 117t23 216r13 243r13 254r16
-29U17 Write 29>24 108b17 111l11 111t16 243s29 254s32
+28w14 AcelaratorState 107b19 117l8 117t23 216r13 247r13 258r16
+29U17 Write 29>24 108b17 111l11 111t16 247s29 258s32
 29b24 newState{boolean} 108b24 110r24
 30U17 Read 30<23 113b17 116l11 116t15 216s29
 30b23 CurState{boolean} 113b23 115m10
 32b7 Acelarator{boolean} 110r10 115r22
-35w14 DistanceValue 119b19 129l8 129t21 175r10 239r13
+35w14 DistanceValue 119b19 129l8 129t21 175r10 242r16
 36U17 Write 36>24 120b17 123l11 123t16 175s24
 36f24 newDistance{float} 120b24 122r22
-37U17 Read 37<23 125b17 128l11 128t15 239s27
+37U17 Read 37<23 125b17 128l11 128t15 242s30
 37f23 CurDistance{float} 125b23 127m10
 39f7 Distance{float} 122r10 127r25
 47t9 VehicleDetectionSensor 169b14 178l8 178t30
@@ -136,16 +136,16 @@ X 23 socof.adb
 50f21 Vi{float} 185m32 185r32 186r52
 50f24 Dist{float} 185m35 185r35 186r55
 53t9 Wheel 192b14 209l8 209t13
-54Y13 Request 54<21 200b17 207l13 207t20
+54Y13 Request 54<21 200b17 207l14 207t21
 54f21 NewSpeed{float} 201m35 201r35 203r49
 57t9 Accelerator 211b14 223l8 223t19
 58Y13 Request 58<21 215b17 221l14 221t21
 58b21 newState{boolean} 216m34 216r34 217r27 218r16
-61t9 CAS 225b14 259l8 259t11
-62Y13 Request 62<21 234b17 237l14 237t21
-62f21 CurSpeed{float} 235m32 235r32 236r29
-63Y13 Request2 63<22 238b17 241l14 241t22
-63f22 CurDistance{float} 239m32 239r32 240r37
+61t9 CAS 225b14 263l8 263t11
+62Y13 Request 62<21 235b20 239l17 239t24
+62f21 CurSpeed{float} 237m35 237r35 238r32
+63Y13 Request2 63<22 241b20 244l17 244t25
+63f22 CurDistance{float} 242m35 242r35 243r40
 137V13 CalculateAcelaration{float} 137b13 137>35 137>44 140l8 140t28 186s31
 137f35 Vinicial{float} 139r16
 137f44 Dist{float} 139r34
@@ -154,11 +154,11 @@ X 23 socof.adb
 147V13 ConverMsToKmh{float} 147b13 147>28 150l8 150t21 204s32
 147f28 Kmh{float} 149r22
 152V13 CalcStoppingDistance{float} 152b13 152>35 152>39 152>52 155l8 155t28
-. 246s41
+. 250s41
 152f35 Kmh{float} 154r22
 152f39 CoefFriction{float} 154r56
 152f52 BrakeAct{float} 154r47
-157V13 CalculateTime{float} 157b13 157>28 157>37 160l8 160t21 250s38
+157V13 CalculateTime{float} 157b13 157>28 157>37 160l8 160t21 254s38
 157f28 Vinicial{float} 159r25
 157f37 Dist{float} 159r19
 170i7 Next_Time{2|38I9} 174r22 176m10 176r23
@@ -174,11 +174,11 @@ X 23 socof.adb
 212b7 Acelarator{boolean} 217m13
 215b25 newState{boolean}
 226b7 Acelarator{boolean}
-227f7 CurrentSpeed{float} 236m13 246r62 250r52 255r36
-228f7 DistanceNextObstacle{float} 240m13 242r14 248r59 255r49
-229f7 EstimatedSafeDistance{float} 246m16 248r35 250r65
-230f7 EstimatedSafeBrakeTime{float} 250m13 251r16
-231i7 I{integer} 246r85 247m16 247r21 248r26
-234f25 CurSpeed{float}
-238f26 CurDistance{float}
+227f7 CurrentSpeed{float} 238m16 250r62 254r52 259r36
+228f7 DistanceNextObstacle{float} 243m16 246r14 252r59 259r49
+229f7 EstimatedSafeDistance{float} 250m16 252r35 254r65
+230f7 EstimatedSafeBrakeTime{float} 254m13 255r16
+231i7 I{integer} 250r85 251m16 251r21 252r26
+235f28 CurSpeed{float}
+241f29 CurDistance{float}
 

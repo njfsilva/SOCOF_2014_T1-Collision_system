@@ -168,7 +168,7 @@ procedure Socof is
 
    task body VehicleDetectionSensor is
       Next_Time : Calendar.Time     := Calendar.Clock;
-      Distance : Float := 20.0;
+      Distance : Float := 200.0;
    begin
       loop
          delay until Next_Time;
@@ -204,7 +204,7 @@ procedure Socof is
             CurrentSpeedKmh := ConverMsToKmh(NewCurrentSpeed);
             WheelVelocity.Write(CurrentSpeedKmh);
             Next_Time := Next_Time + Interval;
-        end Request;
+         end Request;
       end loop;
    end Wheel;
 
@@ -231,14 +231,18 @@ procedure Socof is
       I : Integer := 1;
    begin
       loop
-         accept Request(CurSpeed : out Float) do
-            WheelVelocity.Read(CurSpeed);
-            CurrentSpeed := CurSpeed;
-         end Request;
-         accept Request2(CurDistance : out Float) do
-            DistanceValue.Read(CurDistance);
-            DistanceNextObstacle := CurDistance;
-         end Request2;
+         select
+            accept Request(CurSpeed : out Float) do
+
+               WheelVelocity.Read(CurSpeed);
+               CurrentSpeed := CurSpeed;
+            end Request;
+         or
+            accept Request2(CurDistance : out Float) do
+               DistanceValue.Read(CurDistance);
+               DistanceNextObstacle := CurDistance;
+            end Request2;
+         end select;
          if  DistanceNextObstacle >= 200.0 then
             AcelaratorState.Write(True);
          else
