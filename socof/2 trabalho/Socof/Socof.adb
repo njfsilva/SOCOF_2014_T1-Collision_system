@@ -197,15 +197,18 @@ procedure Socof is
    end VehicleDetectionSensor;
 
    task body Brake is
+      Next_Time : Calendar.Time     := Calendar.Clock;
       ResAcelaration : Float;
       VelocityInital, Distance : Float;
    begin
       loop
+         delay until Next_Time;
          accept Request(Vi,Dist : out Float) do
             BreakPressure.Read(Vi,Dist);
             VelocityInital := Vi;
             Distance := Dist;
          end Request;
+         Next_Time := Next_Time + Interval;
          ResAcelaration := CalculateAcelaration(VelocityInital,Distance);
          WheelAcelaration.Write(ResAcelaration);
       end loop;
@@ -215,36 +218,42 @@ procedure Socof is
       CurrentSpeedMs : Float;
       NewCurrentSpeed : Float;
       CurrentSpeedKmh : Float := 30.0;
+      NewAcelaration : Float;
       Next_Time : Calendar.Time     := Calendar.Clock;
    begin
       loop
          delay until Next_Time;
          accept Request(NewSpeed : out Float) do
             WheelAcelaration.Read(NewSpeed);
-            CurrentSpeedMs := ConverKmhToMs(CurrentSpeedKmh);
-            NewCurrentSpeed := CurrentSpeedMs + NewSpeed * 0.2;     --REVER!!!!
-            CurrentSpeedKmh := ConverMsToKmh(NewCurrentSpeed);
-            WheelVelocity.Write(CurrentSpeedKmh);
-            Next_Time := Next_Time + Interval;
+            NewAcelaration := NewSpeed;
          end Request;
+         CurrentSpeedMs := ConverKmhToMs(CurrentSpeedKmh);
+         NewCurrentSpeed := CurrentSpeedMs + NewAcelaration * 0.2;     --REVER!!!!
+         CurrentSpeedKmh := ConverMsToKmh(NewCurrentSpeed);
+         WheelVelocity.Write(CurrentSpeedKmh);
+         Next_Time := Next_Time + Interval;
       end loop;
    end Wheel;
 
    task body Accelerator is
+      Next_Time : Calendar.Time     := Calendar.Clock;
       Acelarator : Boolean := True;
    begin
       loop
+         delay until Next_Time;
          accept Request(newState : out Boolean) do
             AcelaratorState.Read(newState);
             Acelarator := newState;
-            if newState = True Then
-               WheelAcelaration.Write(0.0);
-            end if;
          end Request;
+         if Acelarator = True Then
+            WheelAcelaration.Write(0.0);
+         end if;
+         Next_Time := Next_Time + Interval;
       end loop;
    end Accelerator;
 
    task body CAS is
+      Next_Time : Calendar.Time     := Calendar.Clock;
       Acelarator : Boolean := True;
       CurrentSpeed : Float;
       DistanceNextObstacle : Float;
@@ -254,9 +263,9 @@ procedure Socof is
       I : Integer := 1;
    begin
       loop
+         delay until Next_Time;
          select
             accept Request(CurSpeed : out Float) do
-
                WheelVelocity.Read(CurSpeed);
                CurrentSpeed := CurSpeed;
             end Request;
@@ -283,6 +292,7 @@ procedure Socof is
                BreakPressure.Write(CurrentSpeed,DistanceNextObstacle);    -- REVER DistanceNextObstacle vs EstimatedSafeDistance
             end if;
          end if;
+         Next_Time := Next_Time + Interval;
       end loop;
    end CAS;
 
