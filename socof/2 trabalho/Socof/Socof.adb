@@ -5,8 +5,8 @@ with Ada.Numerics.Generic_Elementary_Functions;
 with Ada.Numerics.Discrete_Random;
 procedure Socof is
 
-   Interval  : constant Duration := Duration(0.2);--Duration (43_200);
-
+   Interval  : constant Duration := Duration(0.05);--Duration (43_200);
+   initialSpeed : Float := 1.5;
 
    protected type Semaphore(Start_Count: Integer := 1) is
       entry Acquire;
@@ -37,7 +37,7 @@ procedure Socof is
       procedure Write (NewSpeed : in Float);
       procedure Read (CurSpeed : out Float);
    private
-      CurrentSpeed : Float;
+      CurrentSpeed : Float := 1.5;
    end WheelVelocity;
 
    protected BreakPressure is
@@ -62,6 +62,12 @@ procedure Socof is
       Friction : Float;
    end DistanceValue;
 
+   protected Finish is
+      procedure Write (state : in Boolean);
+      procedure Read (state : out Boolean);
+   private
+      Finish : Boolean := false;
+   end Finish;
 
 
 
@@ -153,6 +159,20 @@ procedure Socof is
       end Read;
    end DistanceValue;
 
+   protected body Finish is
+      procedure Write (state : in Boolean) is
+      begin
+         Finish := state;
+      end Write;
+
+      procedure Read (state : out Boolean) is
+      begin
+         state := Finish;
+      end Read;
+   end Finish;
+
+
+
 
 
 
@@ -195,66 +215,65 @@ procedure Socof is
 
    task body VehicleDetectionSensor is
       Next_Time : Calendar.Time     := Calendar.Clock;
-      Distance : Float := 200.0;
-      subtype RangeDistance is Integer range 1 .. 50;
-      package Random_Distance is new Ada.Numerics.Discrete_Random (RangeDistance);
-      use Random_Distance;
-      G : Generator;
-      RandomValue : Integer;
+      Distance : Float := 8.0;
+      CurrentVelocity : Float;
+      Fixo : Boolean :=  True; -- obstaculo tem movimento ou não
       Friction : Float := 0.7;
    begin
-      Put_Line("VehicleDetectionSensor");
-      Reset (G);
       loop
          delay until Next_Time;
-         DistanceValue.Write (Distance,Friction);
+         WheelVelocity.Read(CurrentVelocity);
+         if Fixo = True then
+            Distance := Distance - (CurrentVelocity *0.05);
+            if Distance > 6.0 then
+               DistanceValue.Write (-1.0,Friction);
+            elsif Distance < 0.1 then
+               DistanceValue.Write (0.0,Friction);
+               Distance:=0.0;
+            else
+               DistanceValue.Write (Distance,Friction);
+            end if;
+         end if;
          Next_Time := Next_Time + Interval;
-         if Distance = 0.0 then
-            Distance := 200.0;
-         end if;
-         RandomValue := Random(G);
-         Distance := Distance - 5.0;--float(RandomValue);
-         if Distance < 0.0 then
-            Distance := 0.01;
-         end if;
       end loop;
    end VehicleDetectionSensor;
 
    task body Brake is
-      Next_Time : Calendar.Time     := Calendar.Clock;
+      Next_Time : Calendar.Time     := Calendar.Clock + Duration(0.001);
       ResAcelaration : Float;
       VelocityInital, Distance : Float;
    begin
       --delay 0.4;
-      Put_Line("Brake");
       loop
          delay until Next_Time;
          BreakPressure.Read(VelocityInital,Distance);
-         Next_Time := Next_Time + Interval;
          ResAcelaration := CalculateAcelaration(VelocityInital,Distance);
          WheelAcelaration.Write(ResAcelaration);
+         Next_Time := Next_Time + Interval;
       end loop;
    end Brake;
 
    task body Wheel is
-      CurrentSpeedMs : Float := 8.333333;
+      CurrentSpeedMs : Float := 1.5;
       NewCurrentSpeed : Float;
       NewAcelaration : Float;
       Next_Time : Calendar.Time     := Calendar.Clock;
    begin
-      Put_Line("Wheel");
       loop
          delay until Next_Time;
          WheelAcelaration.Read(NewAcelaration);
-         NewCurrentSpeed := CurrentSpeedMs + NewAcelaration * 0.2;     --REVER!!!!
+         NewCurrentSpeed := CurrentSpeedMs + NewAcelaration * 0.05;     --REVER!!!!
          CurrentSpeedMs := NewCurrentSpeed;
+         if CurrentSpeedMs < 0.1 then
+            CurrentSpeedMs := 0.0;
+         end if;
          WheelVelocity.Write(CurrentSpeedMs);
          Next_Time := Next_Time + Interval;
       end loop;
    end Wheel;
 
    task body Accelerator is
-      Next_Time : Calendar.Time     := Calendar.Clock;
+      Next_Time : Calendar.Time     := Calendar.Clock + Duration(0.001);
       Acelarator : Boolean := True;
    begin
       Put_Line("Accelerator");
@@ -269,55 +288,73 @@ procedure Socof is
    end Accelerator;
 
    task body CAS is
-      Next_Time : Calendar.Time     := Calendar.Clock;
-      Acelarator : Boolean := True;
+      Next_Time : Calendar.Time     := Calendar.Clock + Duration(0.001);
       CurrentSpeed : Float := -2.0;
       DistanceNextObstacle : Float := -2.0;
       EstimatedSafeDistance : Float;
       Friction : Float;
+      DriverSafeBreakDistance : Float;
       EstimatedSafeBrakeTime : Float := 0.0;
       I : Integer;
       S: Semaphore;
    begin
-      Put_Line("cas");
       loop
          delay until Next_Time;
 
          WheelVelocity.Read(CurrentSpeed);
          DistanceValue.Read(DistanceNextObstacle,Friction);
-
-         --put_line("new");
+         DriverSafeBreakDistance := CurrentSpeed * 3.0;
+         --
+         --s.Acquire;
+         --
          --put(DistanceNextObstacle);
-         --put(" - ");
-
-         --new_line;
-         if  DistanceNextObstacle >= 200.0 then
+         if (DistanceNextObstacle < 0.1) then  -- retorna valor negativo quando o alcance do lazer (6m) não detecta obstaculos
             AcelaratorState.Write(True);
+            put_line("too far away");
+            --
+            --s.Release;
+            --
          else
-            put_line("DistanceNextObstacle");
-            put(DistanceNextObstacle);
-            I := 1;
-            loop
-               put_line("loop EstimatedSafeDistance");
-               --S.Acquire;
-               EstimatedSafeDistance := CalcStoppingDistance(CurrentSpeed,Friction,Float(I));
-               put(EstimatedSafeDistance);
+            if (CurrentSpeed = 0.0) then
+               Put_Line("Carro parado"); -- batota rever
+            elsif (DriverSafeBreakDistance < DistanceNextObstacle) then
+               AcelaratorState.Write(True);
+               Put_Line("ALERT obstaculo");
+               Put_Line("Distancia: ");
+               put(DistanceNextObstacle);
                new_line;
-               put(Friction);
-               new_line;
+               --
+               --s.Release;
+               --
+            else
+               I := 0;
+               loop
+                  I := I+1;
+                  EstimatedSafeDistance := CalcStoppingDistance(CurrentSpeed,Friction,Float(I));
+                  if EstimatedSafeDistance < DistanceNextObstacle then
+                     exit;
+                  end if;
+                  exit when I >= 8;
+               end loop;
+               put_line("*******************************************************");
+               put_line("travao automatico! forca: ");
                put(I);
-               put_line("CurSpeed");
+               new_line;
+               put_line("velocidade: ");
                put(CurrentSpeed);
                new_line;
-               I := I+1;
-               exit when I < 8 or EstimatedSafeDistance < DistanceNextObstacle;
-            end loop;
-            EstimatedSafeBrakeTime :=CalculateTime(CurrentSpeed,EstimatedSafeDistance);
-            if EstimatedSafeBrakeTime > 3.0 then
-               Put_Line("ALERT Carro");
-            else
+               put_line("distancia: ");
+               put(DistanceNextObstacle);
+               new_line;
+               put_line("EstimatedSafeDistance: ");
+               put(EstimatedSafeDistance);
+               new_line;
                AcelaratorState.Write(False);
                BreakPressure.Write(CurrentSpeed,EstimatedSafeDistance);    -- REVER DistanceNextObstacle vs EstimatedSafeDistance
+               put_line("*******************************************************");
+               --
+               --s.Release;
+               --
             end if;
          end if;
          Next_Time := Next_Time + Interval;
@@ -325,5 +362,5 @@ procedure Socof is
    end CAS;
 
 begin
-   Put_Line("hello");
+   null;
 end Socof;
