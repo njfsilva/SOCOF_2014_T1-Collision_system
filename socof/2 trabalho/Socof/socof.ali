@@ -4,7 +4,7 @@ A -gnatA
 P ZX
 R vnnnnnnvnvnnnnnnnnvvnvnvvvnnvnnvnvvnvnnnnnnnvnnnnvnvnnnnnnvnnnnvnnnnnnvnv1nnnnnv1+nnnv1+nn
 
-U socof%b		socof.adb		3f9965e3 NE OO SU
+U socof%b		socof.adb		2eac2959 NE OO SU
 W ada%s			ada.ads			ada.ali
 W ada.calendar.delays%s	a-caldel.adb		a-caldel.ali
 W ada.exceptions%s	a-except.adb		a-except.ali
@@ -54,7 +54,7 @@ D interfac.ads		20120510125814 129923ea
 D i-c.ads		20120510125814 5421119b
 D i-cstrin.ads		20120510125814 341d0ddf
 D i-cstrea.ads		20120510125814 1bd72c32
-D socof.adb		20140615140100 37565125
+D socof.adb		20140615141654 26631d9f
 D system.ads		20120510125846 6daf90c4
 D s-atacco.ads		20120510125818 4c36d12f
 D s-crtl.ads		20120510125824 ac77b159

@@ -234,7 +234,7 @@ procedure Socof is
                DistanceValue.Write (Distance,Friction);
             end if;
          elsif Fixo = False then
-            Distance := (Distance + (CurrentVelocity/2.0*0.05) - (CurrentVelocity *0.05)); --velocidade do obstaculo em movimento
+            Distance := (Distance + (CurrentVelocity/1.5*0.05) - (CurrentVelocity *0.05)); --velocidade do obstaculo em movimento
             if Distance > 6.0 then
                DistanceValue.Write (-1.0,Friction);
             elsif Distance < 0.25 then
