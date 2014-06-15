@@ -215,7 +215,6 @@ procedure Socof is
 
    task body VehicleDetectionSensor is
       Next_Time : Calendar.Time     := Calendar.Clock;
-      --Distance : Float := 8.0;
       CurrentVelocity : Float;
       Distance : Float := 8.0;
       Fixo : Boolean :=  False; -- obstaculo tem movimento ou não
@@ -226,6 +225,16 @@ procedure Socof is
          WheelVelocity.Read(CurrentVelocity);
          if Fixo = True then
             Distance := Distance - (CurrentVelocity *0.05);
+            if Distance > 6.0 then
+               DistanceValue.Write (-1.0,Friction);
+            elsif Distance < 0.25 then
+               DistanceValue.Write (0.0,Friction);
+               Distance := 0.0;
+            else
+               DistanceValue.Write (Distance,Friction);
+            end if;
+         elsif Fixo = False then
+            Distance := (Distance + (CurrentVelocity/2.0*0.05) - (CurrentVelocity *0.05)); --velocidade do obstaculo em movimento
             if Distance > 6.0 then
                DistanceValue.Write (-1.0,Friction);
             elsif Distance < 0.25 then
