@@ -6,7 +6,7 @@ with Ada.Numerics.Discrete_Random;
 procedure Socof is
 
    Interval  : constant Duration := Duration(0.05);--Duration (43_200);
-   initialSpeed : Float := 1.5;
+   initialSpeed : constant Float := 8.3;
 
    protected type Semaphore(Start_Count: Integer := 1) is
       entry Acquire;
@@ -37,7 +37,7 @@ procedure Socof is
       procedure Write (NewSpeed : in Float);
       procedure Read (CurSpeed : out Float);
    private
-      CurrentSpeed : Float := 1.5;
+      CurrentSpeed : Float := initialSpeed;
    end WheelVelocity;
 
    protected BreakPressure is
@@ -51,7 +51,7 @@ procedure Socof is
       procedure Write (newState : in Boolean);
       procedure Read (CurState : out Boolean);
    private
-      Acelarator : Boolean;
+      Acelarator : Boolean := true;
    end AcelaratorState;
 
    protected DistanceValue is
@@ -227,9 +227,9 @@ procedure Socof is
             Distance := Distance - (CurrentVelocity *0.05);
             if Distance > 6.0 then
                DistanceValue.Write (-1.0,Friction);
-            elsif Distance < 0.1 then
+            elsif Distance < 0.25 then
                DistanceValue.Write (0.0,Friction);
-               Distance:=0.0;
+               Distance := 0.0;
             else
                DistanceValue.Write (Distance,Friction);
             end if;
@@ -239,25 +239,33 @@ procedure Socof is
    end VehicleDetectionSensor;
 
    task body Brake is
-      Next_Time : Calendar.Time     := Calendar.Clock + Duration(0.001);
+      Next_Time : Calendar.Time     := Calendar.Clock + Duration(0.01);
       ResAcelaration : Float;
       VelocityInital, Distance : Float;
+       Acelarator : Boolean := True;
    begin
-      --delay 0.4;
       loop
          delay until Next_Time;
-         BreakPressure.Read(VelocityInital,Distance);
-         ResAcelaration := CalculateAcelaration(VelocityInital,Distance);
-         WheelAcelaration.Write(ResAcelaration);
+         AcelaratorState.Read(Acelarator);
+         if Acelarator = False then
+            BreakPressure.Read(VelocityInital,Distance);
+            ResAcelaration := CalculateAcelaration(VelocityInital,Distance);
+            if ResAcelaration > 0.0 then
+               put_line("Errp aceleração possitiva");
+               ResAcelaration := 0.0;
+            end if;
+            WheelAcelaration.Write(ResAcelaration);
+         end if;
          Next_Time := Next_Time + Interval;
       end loop;
    end Brake;
 
    task body Wheel is
-      CurrentSpeedMs : Float := 1.5;
+      CurrentSpeedMs : Float := initialSpeed;
       NewCurrentSpeed : Float;
       NewAcelaration : Float;
       Next_Time : Calendar.Time     := Calendar.Clock;
+      S: Semaphore;
    begin
       loop
          delay until Next_Time;
@@ -273,7 +281,7 @@ procedure Socof is
    end Wheel;
 
    task body Accelerator is
-      Next_Time : Calendar.Time     := Calendar.Clock + Duration(0.001);
+      Next_Time : Calendar.Time     := Calendar.Clock + Duration(0.01);
       Acelarator : Boolean := True;
    begin
       Put_Line("Accelerator");
@@ -288,7 +296,7 @@ procedure Socof is
    end Accelerator;
 
    task body CAS is
-      Next_Time : Calendar.Time     := Calendar.Clock + Duration(0.001);
+      Next_Time : Calendar.Time     := Calendar.Clock + Duration(0.01);
       CurrentSpeed : Float := -2.0;
       DistanceNextObstacle : Float := -2.0;
       EstimatedSafeDistance : Float;
@@ -308,15 +316,17 @@ procedure Socof is
          --s.Acquire;
          --
          --put(DistanceNextObstacle);
-         if (DistanceNextObstacle < 0.1) then  -- retorna valor negativo quando o alcance do lazer (6m) não detecta obstaculos
+         if (DistanceNextObstacle < 0.0) then  -- retorna valor negativo quando o alcance do lazer (6m) não detecta obstaculos
             AcelaratorState.Write(True);
             put_line("too far away");
+            new_line;
             --
             --s.Release;
             --
          else
             if (CurrentSpeed = 0.0) then
                Put_Line("Carro parado"); -- batota rever
+               AcelaratorState.Write(True); -- acelaracao 0 + velocidade 0 =
             elsif (DriverSafeBreakDistance < DistanceNextObstacle) then
                AcelaratorState.Write(True);
                Put_Line("ALERT obstaculo");
